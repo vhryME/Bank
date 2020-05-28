@@ -24,14 +24,16 @@ public class Client {
     private double count;
     private String currency;
 
-    public Client(String id, String name, String address, String login, String password, String pin, double count, String currency) {
-        this.id = id;
+
+    public Client(){}
+
+    //Count = 0 because that will be filed only after registred
+    public Client(String name, String address, String login, String password, String pin, String currency) {
         this.name = name;
         this.address = address;
         this.login = login;
         this.password = password;
         this.pin = pin;
-        this.count = count;
         this.currency = currency;
     }
 }
