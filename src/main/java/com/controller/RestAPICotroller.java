@@ -1,4 +1,4 @@
-package com.controllers;
+package com.controller;
 
 
 import com.model.Client;
@@ -40,4 +40,21 @@ public class RestAPICotroller {
     public void delete(@RequestParam Integer id) {
         repository.deleteById(id);
     }
+
+
+    /*@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+    public void withdraw(@RequestParam String login, @RequestParam String password, @RequestParam String pin,
+                         @RequestParam double howMuch, @RequestParam String currency, @RequestParam int whichCount) {
+
+        List<Client> clients = repository.findAll();
+
+        for(Client client : clients) {
+            if(client.getLogin().equals(login) && client.getPassword().equals(password) && client.getPin().equals(pin)){
+                switch (currency) {
+                    case "EURO":
+                        client.getCounts().get(whichCount) = Count.getEuro(client.getCounts().get(whichCount)) - howMuch;
+                }
+            }
+        }
+    }*/
 }
