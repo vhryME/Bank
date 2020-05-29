@@ -2,6 +2,7 @@ package com.controllers;
 
 
 import com.model.Client;
+import com.model.Count;
 import com.repo.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,10 @@ public class RestAPICotroller {
     //Adding new Client in Bank DB
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public void addClient(@RequestParam String name, @RequestParam String address, @RequestParam String login,
-                          @RequestParam String password, @RequestParam String pin, @RequestParam String currency) {
+                          @RequestParam String password, @RequestParam String pin, @RequestParam Double money,
+                          @RequestParam String currency) {
 
-        Client client = new Client(name, address, login, password, pin, currency);
+        Client client = new Client(name, address, login, password, pin, new Count(money, currency));
 
         repository.save(client);
     }
