@@ -1,60 +1,61 @@
 package com.controller;
 
 
-import com.model.Client;
+import com.dto.Client;
+import com.model.Account;
 import com.model.Count;
 import com.repo.ClientRepository;
+import com.service.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
 public class RestAPICotroller {
     @Autowired
-    ClientRepository repository;
+    ClientServiceImpl service;
 
     //Adding new Client in Bank DB
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public void addClient(@RequestParam String name, @RequestParam String address, @RequestParam String login,
-                          @RequestParam String password, @RequestParam String pin, @RequestParam Double money,
+    public void addClient(@RequestParam String name, @RequestParam String login,
+                          @RequestParam String password, @RequestParam Integer pin, @RequestParam Double money,
                           @RequestParam String currency) {
 
-        Client client = new Client(name, address, login, password, pin, new Count(money, currency));
+        Account account = new Account(name, login, password);
+        List<Count> counts = new ArrayList<>();
 
-        repository.save(client);
+        counts.add(new Count(money, currency, pin));
+
+        Client client = new Client(account, counts);
+
+        service.save(account);
     }
 
     //Showing all clients of your Bank
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Client> showAll() {
-        return repository.findAll();
+    public List<Account> showAll() {
+        return service.findAll();
     }
 
     //Deleting client by id
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public void delete(@RequestParam Integer id) {
-        repository.deleteById(id);
+    public void delete(@RequestParam Long id) {
+        service.deleteById(id);
     }
 
 
-    /*@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void withdraw(@RequestParam String login, @RequestParam String password, @RequestParam String pin,
-                         @RequestParam double howMuch, @RequestParam String currency, @RequestParam int whichCount) {
+    @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+    public void withdraw(@RequestParam Integer pin, @RequestParam double howMuch,
+                         @RequestParam String currency, @RequestParam int countID) {
 
-        List<Client> clients = repository.findAll();
-
-        for(Client client : clients) {
-            if(client.getLogin().equals(login) && client.getPassword().equals(password) && client.getPin().equals(pin)){
-                switch (currency) {
-                    case "EURO":
-                        client.getCounts().get(whichCount) = Count.getEuro(client.getCounts().get(whichCount)) - howMuch;
-                }
-            }
-        }
-    }*/
+        //This is not complished version, only demonstrating
+        service.withdraw(client, countID, howMuch, currency);
+    }
 }
