@@ -13,9 +13,6 @@ public class User {
     private Long id;
 
     @Column
-    private Client client;
-
-    @Column
     private String name;
 
     @Column
@@ -28,20 +25,18 @@ public class User {
 
     public User() { }
 
-    public User(Client client, String name, String login, String password, Date enterTime) {
-        this.client = client;
-        this.name = name;
+    public User(String name, String login, String password, Date enterTime) {
         this.login = login;
         this.password = password;
         this.enterTime = enterTime;
     }
 
 
-    public Client getClient() { return client; }
-    public void setClient(Client client) { this.client = client; }
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getLogin() { return login; }
     public void setLogin(String login) { this.login = login; }

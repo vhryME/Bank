@@ -19,7 +19,11 @@ public class Count {
     private Integer pin;
 
 
-    public Count() {}
+    public Count() {
+        this.money = 0.0;
+        this.currency = "dollar";
+        this.pin = 0000;
+    }
 
     public Count(Double money, String currency, Integer pin) {
         this.money = money;
