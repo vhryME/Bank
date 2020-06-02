@@ -56,7 +56,7 @@ public class CountService {
             Client clientFrom = clientService.getClientById(clientIdFrom);
 
             if(countRepo.existsById(countId)) {
-                if(clientFrom.getCounts() != null) {
+                if(clientFrom.getCounts() != null && clientFrom.getCounts().get((int) countId) != null) {
 
                     Count countForChange = clientFrom.getCounts().get((int) countId);
 
