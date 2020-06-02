@@ -36,6 +36,9 @@ public class Count {
     public static double getRub(Count count) { return count.money *= 0.014; }
 
 
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public Double getMoney() { return money; }
     public void setMoney(Double money) { this.money = money; }
 

@@ -39,7 +39,7 @@ public class ClientController {
         Client client = new Client(user, counts);
 
         userService.createUser(user);
-        countService.saveCount(count);
+        countService.createCount(count);
         clientService.createClient(client);
     }
 }

@@ -1,6 +1,7 @@
 package com.controller;
 
 
+import com.model.Count;
 import com.service.ClientService;
 import com.service.CountService;
 import com.service.UserService;
@@ -23,7 +24,8 @@ public class CountController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public void createCount() {
-        countService.createCount();
+        Count count = new Count();
+        countService.createCount(count);
     }
 
     @RequestMapping(value = "/change-owner", method = RequestMethod.GET)
