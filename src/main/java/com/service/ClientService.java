@@ -15,19 +15,19 @@ public class ClientService {
     ClientRepo clientRepo;
 
     public void createClient(Client client) {
-        if(clientRepo != null)
+        if(clientRepo != null && !clientRepo.existsById(client.getId()) && client != null)
             clientRepo.save(client);
     }
 
 
     public void deleteUser(Client client) {
-        if(clientRepo != null)
+        if(clientRepo != null && clientRepo.existsById(client.getId()) && client != null)
             clientRepo.delete(client);
     }
 
 
     public Client getClientById(long id) {
-        if(clientRepo != null)
+        if(clientRepo != null && clientRepo.existsById(id))
             return clientRepo.getOne(id);
 
         return null;

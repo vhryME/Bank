@@ -16,26 +16,30 @@ public class CountService {
     @Autowired
     CountRepo countRepo;
     @Autowired
+    ClientRepo clientRepo;
+    @Autowired
     ClientService clientService;
 
-    public void createCount() {
-        Count count = new Count();
 
-        if(countRepo != null)
+    public void createCount(Count count) {
+        if(countRepo != null && !countRepo.existsById(count.getId()) && count != null)
             countRepo.save(count);
     }
 
+
     public void deleteCount(Count count) {
-        if(countRepo != null)
+        if(countRepo != null && countRepo.existsById(count.getId()) && count != null)
             countRepo.delete(count);
     }
 
+
     public Count getCountById(Long id) {
-        if(countRepo != null)
+        if(countRepo != null && countRepo.existsById(id))
             return countRepo.getOne(id);
 
         return null;
     }
+
 
     public List<Count> getAllCounts() {
         if(countRepo != null)
@@ -44,57 +48,77 @@ public class CountService {
         return null;
     }
 
+
     public void changeOwner(long countId, long clientIdFrom, long clientIdTo) {
-        Client clientTo = clientService.getClientById(clientIdTo);
-        Client clientFrom = clientService.getClientById(clientIdFrom);
+        if(clientService != null && clientRepo.existsById(clientIdFrom) && clientRepo.existsById(clientIdTo)) {
 
-        Count countForChange = clientFrom.getCounts().get((int) countId);
+            Client clientTo = clientService.getClientById(clientIdTo);
+            Client clientFrom = clientService.getClientById(clientIdFrom);
 
-        if(countForChange != null) {
-            clientTo.getCounts().add(countForChange);
+            if(countRepo.existsById(countId)) {
+                if(clientFrom.getCounts() != null) {
 
-            countForChange = null;
+                    Count countForChange = clientFrom.getCounts().get((int) countId);
+
+                    if (countForChange != null) {
+                        clientTo.getCounts().add(countForChange);
+
+                        countForChange = null;
+                    }
+                }
+            }
         }
     }
 
+
     public double withdraw(long countID, double howMuch, String currency) {
+        if (countRepo.existsById(countID)) {
+            Count countForWithdraw = countRepo.getOne(countID);
+
             switch (currency) {
                 case ("DOLLAR"):
-                    countRepo.getOne(countID).setMoney( countRepo.getOne(countID).getMoney() - howMuch);
+                    countForWithdraw.setMoney(countForWithdraw.getMoney() - howMuch);
                     break;
 
                 case ("EURO"):
-                    countRepo.getOne(countID).setMoney(Count.getEuro(countRepo.getOne(countID)) - howMuch);
+                    countForWithdraw.setMoney(Count.getEuro(countForWithdraw) - howMuch);
                     break;
 
                 case ("RUB"):
-                    countRepo.getOne(countID).setMoney(Count.getRub(countRepo.getOne(countID)) - howMuch);
+                    countForWithdraw.setMoney(Count.getRub(countForWithdraw) - howMuch);
                     break;
             }
 
             return countRepo.getOne(countID).getMoney();
+        }
+
+        return 0.0;
     }
 
 
-
     public void replenish(long countID, double howMuch, String currency) {
-        switch (currency) {
-            case ("DOLLAR"):
-                countRepo.getOne(countID).setMoney( countRepo.getOne(countID).getMoney() + howMuch);
-                break;
+        if (countRepo.existsById(countID)) {
+            Count countForReplenish = countRepo.getOne(countID);
 
-            case ("EURO"):
-                countRepo.getOne(countID).setMoney(Count.getEuro(countRepo.getOne(countID)) + howMuch);
-                break;
+            switch (currency) {
+                case ("DOLLAR"):
+                    countForReplenish.setMoney(countForReplenish.getMoney() + howMuch);
+                    break;
 
-            case ("RUB"):
-                countRepo.getOne(countID).setMoney(Count.getRub(countRepo.getOne(countID)) + howMuch);
-                break;
+                case ("EURO"):
+                    countForReplenish.setMoney(Count.getEuro(countForReplenish) + howMuch);
+                    break;
+
+                case ("RUB"):
+                    countForReplenish.setMoney(Count.getRub(countForReplenish) + howMuch);
+                    break;
+            }
         }
     }
 
 
     public void transfer(long countIdFrom, long countIdTo, double howMuch, String currency) {
-        replenish(countIdTo, withdraw(countIdFrom, howMuch, currency), currency);
+        if(countRepo.existsById(countIdFrom) && countRepo.existsById(countIdTo))
+            replenish(countIdTo, withdraw(countIdFrom, howMuch, currency), currency);
     }
 }

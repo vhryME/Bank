@@ -15,19 +15,19 @@ public class UserService {
     UserRepo userRepo;
 
     public void createUser(User user) {
-        if(userRepo != null)
+        if(userRepo != null && !userRepo.existsById(user.getId()) && user != null)
             userRepo.save(user);
     }
 
 
     public void deleteUser(User user) {
-        if(userRepo != null)
+        if(userRepo != null && userRepo.existsById(user.getId()) && user != null)
             userRepo.delete(user);
     }
 
 
     public User getUserByName(String name) {
-        if(userRepo != null)
+        if(userRepo != null && userRepo.getByName(name) != null)
             return userRepo.getByName(name);
 
         return null;
