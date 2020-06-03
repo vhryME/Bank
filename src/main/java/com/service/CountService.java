@@ -3,6 +3,7 @@ package com.service;
 
 import com.model.Client;
 import com.model.Count;
+import com.model.Currency;
 import com.repo.ClientRepo;
 import com.repo.CountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class CountService {
             Client clientFrom = clientService.getClientById(clientIdFrom);
 
             if(countRepo.existsById(countId)) {
-                if(clientFrom.getCounts() != null && clientFrom.getCounts().get((int) countId) != null) {
+                if(clientFrom.getCounts() != null) {
 
                     Count countForChange = clientFrom.getCounts().get((int) countId);
 
@@ -71,20 +72,20 @@ public class CountService {
     }
 
 
-    public double withdraw(long countID, double howMuch, String currency) {
+    public double withdraw(long countID, double howMuch, Currency currency) {
         if (countRepo.existsById(countID)) {
             Count countForWithdraw = countRepo.getOne(countID);
 
             switch (currency) {
-                case ("DOLLAR"):
+                case DOLLAR:
                     countForWithdraw.setMoney(countForWithdraw.getMoney() - howMuch);
                     break;
 
-                case ("EURO"):
+                case EURO:
                     countForWithdraw.setMoney(Count.getEuro(countForWithdraw) - howMuch);
                     break;
 
-                case ("RUB"):
+                case RUB:
                     countForWithdraw.setMoney(Count.getRub(countForWithdraw) - howMuch);
                     break;
             }
@@ -96,20 +97,20 @@ public class CountService {
     }
 
 
-    public void replenish(long countID, double howMuch, String currency) {
+    public void replenish(long countID, double howMuch, Currency currency) {
         if (countRepo.existsById(countID)) {
             Count countForReplenish = countRepo.getOne(countID);
 
             switch (currency) {
-                case ("DOLLAR"):
+                case DOLLAR:
                     countForReplenish.setMoney(countForReplenish.getMoney() + howMuch);
                     break;
 
-                case ("EURO"):
+                case EURO:
                     countForReplenish.setMoney(Count.getEuro(countForReplenish) + howMuch);
                     break;
 
-                case ("RUB"):
+                case RUB:
                     countForReplenish.setMoney(Count.getRub(countForReplenish) + howMuch);
                     break;
             }
@@ -117,7 +118,7 @@ public class CountService {
     }
 
 
-    public void transfer(long countIdFrom, long countIdTo, double howMuch, String currency) {
+    public void transfer(long countIdFrom, long countIdTo, double howMuch, Currency currency) {
         if(countRepo.existsById(countIdFrom) && countRepo.existsById(countIdTo))
             replenish(countIdTo, withdraw(countIdFrom, howMuch, currency), currency);
     }

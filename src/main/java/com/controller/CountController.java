@@ -2,6 +2,7 @@ package com.controller;
 
 
 import com.model.Count;
+import com.model.Currency;
 import com.service.ClientService;
 import com.service.CountService;
 import com.service.UserService;
@@ -34,20 +35,20 @@ public class CountController {
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-    public void withdraw(@RequestParam long countID, @RequestParam double howMuch, @RequestParam String currency) {
+    public void withdraw(@RequestParam long countID, @RequestParam double howMuch, @RequestParam Currency currency) {
         countService.withdraw(countID, howMuch, currency);
     }
 
     //Replenish some money on your count
     @RequestMapping(value = "/replenish", method = RequestMethod.GET)
-    public void replenish(@RequestParam double howMuch, @RequestParam String currency, @RequestParam int countID) {
+    public void replenish(@RequestParam double howMuch, @RequestParam Currency currency, @RequestParam int countID) {
         countService.replenish(countID, howMuch, currency);
     }
 
     //Tranfer from on user to another
     @RequestMapping(value = "/tranfer", method = RequestMethod.GET)
     public void transfer(@RequestParam int countIdFrom, @RequestParam int countIdTo, @RequestParam double howMuch,
-                         @RequestParam String currency) {
+                         @RequestParam Currency currency) {
         countService.transfer(countIdFrom, countIdTo, howMuch, currency);
     }
 }

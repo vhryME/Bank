@@ -14,20 +14,20 @@ public class Count {
     @Column
     private Double money;
     @Column
-    private String currency;
+    private Currency currency;
     @Column
     private Integer pin;
 
 
     public Count() {
         this.money = 0.0;
-        this.currency = "dollar";
+        this.currency = Currency.DOLLAR;
         this.pin = 0000;
     }
 
     public Count(Double money, String currency, Integer pin) {
         this.money = money;
-        this.currency = currency;
+        this.currency = Currency.DOLLAR;
         this.pin = pin;
     }
 
@@ -42,8 +42,8 @@ public class Count {
     public Double getMoney() { return money; }
     public void setMoney(Double money) { this.money = money; }
 
-    public String getCurrency() { return currency; }
-    public void setCurrency(String currency) { this.currency = currency; }
+    public Currency getCurrency() { return currency; }
+    public void setCurrency(Currency currency) { this.currency = currency; }
 
     public Integer getPin() { return pin; }
     public void setPin(Integer pin) { this.pin = pin; }
