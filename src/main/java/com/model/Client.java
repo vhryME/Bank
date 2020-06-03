@@ -1,11 +1,15 @@
 package com.model;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
 
 @Table
+@Getter @Setter
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,14 +28,4 @@ public class Client {
         this.user = user;
         this.counts = counts;
     }
-
-
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public List<Count> getCounts() { return counts; }
-    public void setCounts(List<Count> counts) { this.counts = counts; }
 }

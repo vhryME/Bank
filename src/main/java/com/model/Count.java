@@ -1,10 +1,14 @@
 package com.model;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 
 @Table
+@Getter @Setter
 public class Count {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,19 +38,6 @@ public class Count {
 
     public static double getEuro(Count count) { return count.money *= 1.11; }
     public static double getRub(Count count) { return count.money *= 0.014; }
-
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Double getMoney() { return money; }
-    public void setMoney(Double money) { this.money = money; }
-
-    public Currency getCurrency() { return currency; }
-    public void setCurrency(Currency currency) { this.currency = currency; }
-
-    public Integer getPin() { return pin; }
-    public void setPin(Integer pin) { this.pin = pin; }
 
 
     @Override
