@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 
+@Entity
 @Table
 @Getter @Setter
 public class Client {
@@ -16,9 +17,11 @@ public class Client {
     private Long id;
 
     @Column
+    @ManyToMany
     private List<Count> counts;
 
     @Column
+    @OneToOne()
     private User user;
 
 

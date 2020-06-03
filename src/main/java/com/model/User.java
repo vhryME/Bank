@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 
+@Entity
 @Table
 @Getter @Setter
 public class User {
