@@ -8,6 +8,7 @@ import com.repo.ClientRepo;
 import com.repo.CountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,12 +23,14 @@ public class CountService {
     ClientService clientService;
 
 
+    @Transactional
     public void createCount(Count count) {
         if(countRepo != null && !countRepo.existsById(count.getId()) && count != null)
             countRepo.save(count);
     }
 
 
+    @Transactional
     public void deleteCount(Count count) {
         if(countRepo != null && countRepo.existsById(count.getId()) && count != null)
             countRepo.delete(count);
@@ -50,6 +53,7 @@ public class CountService {
     }
 
 
+    @Transactional
     public void changeOwner(long countId, long clientIdFrom, long clientIdTo) {
         if(clientService != null && clientRepo.existsById(clientIdFrom) && clientRepo.existsById(clientIdTo)) {
 
@@ -72,6 +76,7 @@ public class CountService {
     }
 
 
+    @Transactional
     public double withdraw(long countID, double howMuch, Currency currency) {
         if (countRepo.existsById(countID)) {
             Count countForWithdraw = countRepo.getOne(countID);
@@ -97,6 +102,7 @@ public class CountService {
     }
 
 
+    @Transactional
     public void replenish(long countID, double howMuch, Currency currency) {
         if (countRepo.existsById(countID)) {
             Count countForReplenish = countRepo.getOne(countID);
@@ -118,6 +124,7 @@ public class CountService {
     }
 
 
+    @Transactional
     public void transfer(long countIdFrom, long countIdTo, double howMuch, Currency currency) {
         if(countRepo.existsById(countIdFrom) && countRepo.existsById(countIdTo))
             replenish(countIdTo, withdraw(countIdFrom, howMuch, currency), currency);
